@@ -2,12 +2,16 @@ from django.shortcuts import render
 from django.http import StreamingHttpResponse, JsonResponse
 import cv2
 import numpy as np
+import os
 from cvzone.HandTrackingModule import HandDetector
 import google.generativeai as genai
 from PIL import Image
 
 # Initialize gemini
-genai.configure(api_key="AIzaSyAH_BAmT2b2jL9ZK-osH9RkggLygmUnwNI")
+api_key = os.getenv('GEMINI_API_KEY')
+if not api_key:
+    raise ValueError("GEMINI_API_KEY environment variable is not set")
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Initialize the HandDetector class with the given parameters
